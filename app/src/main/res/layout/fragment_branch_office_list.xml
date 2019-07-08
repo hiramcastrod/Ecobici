@@ -6,13 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.BranchOfficeListFragment">
+    tools:context=".View.BranchOfficeListFragment"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_branchoffices"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:listitem="@layout/branchoffice_card_view"
+     >
 
     </android.support.v7.widget.RecyclerView>
 

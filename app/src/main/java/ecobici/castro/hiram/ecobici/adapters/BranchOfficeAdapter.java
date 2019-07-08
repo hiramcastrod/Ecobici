@@ -1,7 +1,10 @@
 package ecobici.castro.hiram.ecobici.adapters;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ecobici.castro.hiram.ecobici.R;
+import ecobici.castro.hiram.ecobici.View.MapsActivity;
 import ecobici.castro.hiram.ecobici.models.Branchoffice;
 
 public class BranchOfficeAdapter extends RecyclerView.Adapter<BranchOfficeAdapter.ViewHolder> {
@@ -33,9 +37,24 @@ public class BranchOfficeAdapter extends RecyclerView.Adapter<BranchOfficeAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Branchoffice branchOffice = branchOffices.get(i);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+        final Branchoffice branchOffice = branchOffices.get(i);
         viewHolder.name.setText(branchOffice.getName());
+        viewHolder.address.setText(branchOffice.getAddress());
+        viewHolder.opens.setText("Abierto de: " + branchOffice.getOpens());
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("LAT", branchOffices.get(i).getLatPoint());
+                bundle.putString("LONG", branchOffices.get(i).getLonPoint());
+                bundle.putString("NAME", branchOffices.get(i).getName());
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -44,10 +63,14 @@ public class BranchOfficeAdapter extends RecyclerView.Adapter<BranchOfficeAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name;
-        public ViewHolder(@NonNull View itemView) {
+        public TextView name, address, opens;
+        CardView cardView;
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.card_view);
             name = itemView.findViewById(R.id.name_tv);
+            address = itemView.findViewById(R.id.address_tv);
+            opens = itemView.findViewById(R.id.opens_tv);
         }
     }
 }
